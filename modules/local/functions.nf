@@ -239,6 +239,22 @@ def extract_recal(tsvFile) {
 //     [fcid, lane]
 // }
 
+// Extract gender and status from Channel
+def extract_info(channel) {
+    def gender_map = [:]
+    def status_map = [:]
+    channel = channel.map{ it ->
+        def meta.patient = it[0][0]
+        def meta.gender  = it[0][1]
+        def meta.status  = it[0][2]
+        def meta.sample  = it[0][3]
+        gender_map[meta.patient] = meta.gender
+        status_map[meta.patient, meta.sample] = meta.status
+        [meta]
+    }
+    [gender_map, status_map, channel]
+}
+
 // Check file extension
 def has_extension(it, extension) {
     it.toString().toLowerCase().endsWith(extension.toLowerCase())

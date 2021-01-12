@@ -537,6 +537,19 @@ workflow {
                                 SOMATIC VARIANT CALLING
     ================================================================================
     */
+    
+    if (step == 'somatic_variantcalling') bam_somatic_variant_calling = input_sample
+
+    SOMATIC_VARIANT_CALLING(
+        bam_somatic_variant_calling,
+        dbsnp,
+        dbsnp_tbi,
+        dict,
+        fai,
+        fasta,
+        intervals,
+        target_bed,
+        tools)
 
     /*
     ================================================================================
