@@ -23,10 +23,11 @@ nf-core/sarek:
 nextflow.enable.dsl=2
 
 // Print help message if required
+def json_schema = "$projectDir/nextflow_schema.json"
 
 if (params.help) {
-    def command = "nextflow run nf-core/sarek -profile docker --input sample.tsv"
-    log.info Schema.params_help("$baseDir/nextflow_schema.json", command)
+    def command = "nextflow run sarel --input input.tsv --genome GRCh38 -profile singularity"
+    log.info Schema.params_help(workflow, params, json_schema, command)
     exit 0
 }
 
@@ -63,10 +64,10 @@ Checks.hostname(workflow, params, log) // Check the hostnames against configured
 
 // MultiQC - Stage config files
 
-multiqc_config = file("$baseDir/assets/multiqc_config.yaml", checkIfExists: true)
+multiqc_config = file("$projectDir/assets/multiqc_config.yaml", checkIfExists: true)
 multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
-output_docs = file("$baseDir/docs/output.md", checkIfExists: true)
-output_docs_images = file("$baseDir/docs/images/", checkIfExists: true)
+output_docs = file("$projectDir/docs/output.md", checkIfExists: true)
+output_docs_images = file("$projectDir/docs/images/", checkIfExists: true)
 
 // Check if genome exists in the config file
 if (params.genomes && !params.genomes.containsKey(params.genome) && !params.igenomes_ignore) {
@@ -582,7 +583,7 @@ workflow {
 
 workflow.onComplete {
     def multiqc_report = []
-    Completion.email(workflow, params, summary, run_name, baseDir, multiqc_report, log)
+    Completion.email(workflow, params, summary, run_name, projectDir, multiqc_report, log)
     Completion.summary(workflow, params, log)
 }
 
@@ -1516,7 +1517,7 @@ workflow.onComplete {
 //         --normalbaf ${bafNormal} \
 //         --normallogr ${logrNormal} \
 //         --tumorname ${idSampleTumor} \
-//         --basedir ${baseDir} \
+//         --projectDir ${projectDir} \
 //         --gcfile ${acLociGC} \
 //         --gender ${gender} \
 //         ${purity_ploidy}
