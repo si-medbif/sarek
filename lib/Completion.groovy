@@ -31,6 +31,7 @@ class Completion {
         misc_fields['Nextflow Build']             = workflow.nextflow.build
         misc_fields['Nextflow Compile Timestamp'] = workflow.nextflow.timestamp
 
+        // TODO nf-core: If not using MultiQC, strip out this code (including params.max_multiqc_email_size)
         // On success try attach the multiqc report
         def mqc_report = null
         try {
