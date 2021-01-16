@@ -2403,4 +2403,3 @@ workflow.onComplete {
 // }
 
 // ch_multiqc_report.dump(tag:'MultiQC')
->>>>>>> parent of 5b2935c... Merge pull request #285 from MaxUlysse/dsl2_variant
