@@ -211,50 +211,34 @@ def extract_recal(tsvFile) {
             return [meta, bam, bai, table]
         }
 }
-/*
-// Parse first line of a FASTQ file, return the flowcell id and lane number.
-def flowcellLane_from_fastq(path) {
-    // expected format:
-    // xx:yy:FLOWCELLID:LANE:... (seven fields)
-    // or
-    // FLOWCELLID:LANE:xx:... (five fields)
-    InputStream fileStream = new FileInputStream(path.toFile())
-    InputStream gzipStream = new java.util.zip.GZIPInputStream(fileStream)
-    Reader decoder = new InputStreamReader(gzipStream, 'ASCII')
-    BufferedReader buffered = new BufferedReader(decoder)
-    def line = buffered.readLine()
-    assert line.startsWith('@')
-    line = line.substring(1)
-    def fields = line.split(' ')[0].split(':')
-    String fcid
-    int lane
-    if (fields.size() == 7) {
-        // CASAVA 1.8+ format
-        fcid = fields[2]
-        lane = fields[3].toInteger()
-    } else if (fields.size() == 5) {
-        fcid = fields[0]
-        lane = fields[1].toInteger()
-    }
-    [fcid, lane]
-}
 
-// Extract gender and status from Channel
-def extract_info(channel) {
-    def gender_map = [:]
-    def status_map = [:]
-    channel = channel.map{ it ->
-        def meta.patient = it[0][0]
-        def meta.gender  = it[0][1]
-        def meta.status  = it[0][2]
-        def meta.sample  = it[0][3]
-        gender_map[meta.patient] = meta.gender
-        status_map[meta.patient, meta.sample] = meta.status
-        [meta]
-    }
-    [gender_map, status_map, channel]
-}
-*/
+// // Parse first line of a FASTQ file, return the flowcell id and lane number.
+// def flowcellLane_from_fastq(path) {
+//     // expected format:
+//     // xx:yy:FLOWCELLID:LANE:... (seven fields)
+//     // or
+//     // FLOWCELLID:LANE:xx:... (five fields)
+//     InputStream fileStream = new FileInputStream(path.toFile())
+//     InputStream gzipStream = new java.util.zip.GZIPInputStream(fileStream)
+//     Reader decoder = new InputStreamReader(gzipStream, 'ASCII')
+//     BufferedReader buffered = new BufferedReader(decoder)
+//     def line = buffered.readLine()
+//     assert line.startsWith('@')
+//     line = line.substring(1)
+//     def fields = line.split(' ')[0].split(':')
+//     String fcid
+//     int lane
+//     if (fields.size() == 7) {
+//         // CASAVA 1.8+ format
+//         fcid = fields[2]
+//         lane = fields[3].toInteger()
+//     } else if (fields.size() == 5) {
+//         fcid = fields[0]
+//         lane = fields[1].toInteger()
+//     }
+//     [fcid, lane]
+// }
+
 // Check file extension
 def has_extension(it, extension) {
     it.toString().toLowerCase().endsWith(extension.toLowerCase())
